@@ -1,3 +1,48 @@
 ///   Russ, Wendy, Miles Sudoku Project
 ///
 
+// PsuedoCode
+
+//	Read input file 
+//  Save to 81 element array boardString
+//	Console.log 9 x 9 grid of boardString 
+//    
+//	function findPossibles (sudokuArray)
+		for x 1 to 9
+			for y 1 to 9
+				If blank
+					evaluate this element (e.g. 1,1)
+						for square value 1 to 9
+							evaluate relations 
+								 	evaluateRow
+								  	evaluateColumn
+								 	evaluateCurrentSquare
+	 						assign value of x,y to valueArrayXY[] >>>> {eg: 3,5,8,9}
+
+
+//   function rankSquaresByShortPossibleList (sudokuArray)
+		sort valueArrayXY[] by solutionLength
+			
+			EXAMPLE: 
+				x 1, y 1 is {3}
+				x 1, y 2 is {3,4,8,9}
+				x 1, y 3 is {4,5,6,7,8,9}
+				 ETC.
+				)
+
+//   function fillInPuzzle (sudokuArray)
+		For SolutionLength = 1 to 9
+			Fill in squareXY where valueArrayXY.length = solutionLength
+				Assign the first value in the valueArrayXY[] to the square XY in master boardString
+				
+
+//       
+
+				 
+
+
+
+
+
+
+
