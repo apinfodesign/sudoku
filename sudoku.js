@@ -1,18 +1,129 @@
- 
+console.log('got here 1');
+
+var databuilder = require('./arraybuilder.js');
+//var printer = require('./boardprinter.js');
+
+//var boardString = process.argv[2];
+
+console.log('got here 2')
+
+var boardString = " 94   3  61 8  4  8   4    1  3 264 54 687 92 761 4  5    7   3  8  6 54  7   96 ";
+
+console.log(typeof boardString);
+
+console.log(boardString + "   boardString");
+
+var boardArray = boardString.split('');
+
+
 //how to read the object
-var read = sudokuObject['81'].x ;
-console.log("sudokuObject is " + sudokuObject);	
-console.log("sudokuObject read is " + read ) ;	
+//var read = sudokuObject['81'].x ;
+//console.log("sudokuObject is " + sudokuObject);	
+//console.log("sudokuObject read is " + read ) ;	
 
 //how to read the sudArray
-console.log("sudArray is " + sudArray[1][1].x);
+//console.log("sudArray is " + sudArray[1][1].x);
+
+
+// var databuilder = require('./databuilder.js')
+// var printer = require('./boardprinter.js')
+// var boardString = process.argv[2];
+// var boardArray = boardString.split('');
+
+//take boardArray, creates sudoku object, sends it to findOptions
+databuilder(boardArray, findOptions);
+
+
+function findOptions(fullArray)
+	{
+	var row, col;
+	for (row=0; row<9; row++)
+		{
+		for (col=0; col<9; col++)
+			{console.log("row is " + row + " and col is " + col + " value is " + fullArray[row][col].value);
+				if (fullArray[row][col].value === null)
+					{
+					console.log( fullArray[row][col].value );
+					checkRow(row,col,fullArray);    	//assemble and return possible values
+					checkCol(row,col,fullArray)			//assemble and return possible values
+					//checkBox for (row.col)	//assemble and return possible values
+					}
+			}
+		}
+		console.log(fullArray[0][0])
+ 	};
+
+
+
+function checkRow (row,col, fullArray){
+ 	for (i = 0; i < 9; i++){	// iterate across columns
+ 		//console.log(fullArray[row][col] + row + " " + col + "xxxxx");
+ 		if  ( (fullArray[row][i].value !== null) && (fullArray[row][i] !== fullArray[row][col]) 
+ 			)
+ 		// if you find a null
+ 		var toCheck = fullArray[row][i].value;
+ 		//console.log("tocheck is " + toCheck);
+ 		{   //console.log("i is " + i);
+ 		var possiblesList = fullArray[row][col].possibles;
+ 		 
+ 		deletePossibles(toCheck, possiblesList);
+ 		 
+  		}
+ 		// console.log("Values at location x y: " + x + " " + y + " value " + i);
+ 	}
+};
+
+function checkCol (row,col, fullArray){
+ 	for (i = 0; i < 9; i++){	// iterate across rows
+ 		//console.log(fullArray[row][col] + row + " " + col + "xxxxx");
+ 		if  ( (fullArray[i][col].value !== null) && (fullArray[i][col] !== fullArray[row][col]) 
+ 			)
+ 		// if you find a null
+ 		var toCheck = fullArray[i][col].value;
+ 		//console.log("tocheck is " + toCheck);
+ 		{   //console.log("i is " + i);
+ 		var possiblesList = fullArray[row][col].possibles;
+ 		 
+ 		deletePossibles(toCheck, possiblesList);
+ 		 
+  		}
+ 		// console.log("Values at location x y: " + x + " " + y + " value " + i);
+ 	}
+};
+
+
+function deletePossibles(toCheck, possiblesList){
+		for (var i = 0; i < possiblesList.length; i++) {
+ 				if (possiblesList[i] === toCheck) {
+ 					possiblesList.splice(i, 1);
+ 					console.log("fullArray.possibles is " + 
+ 						possiblesList  );
+ 					return;
+ 				};
+ 			};
+
+};
+
+
+
+
+// function checkCol (row,col){
+//  	for (i = 1; i <= 9; i++){	// iterate across columns
+//  		if (boardArray[i][col].value !== null) && (boardArray[i][col] !== boardArray[row][col] ) ) 
+//  		// if you find a null
+//  		{   
+//  			boardArray[row][col].possibles.push(boardArray[i][col].value)
+//  		}
  
-var databuilder = require('./databuilder.js')
-var printer = require('./boardprinter.js')
-var boardString = process.argv[2];
-var boardArray = boardString.split('');
- 
+//  	}
+// };
+
+
+function matchBox (row,col){
+};
+
   
+
 function findPossibles(sudokuObject) {
 	var countnull=0;  //testing only
 	var row, column, squareNum;
@@ -46,7 +157,7 @@ function findPossibles(sudokuObject) {
 
 //matchRow checks 9 squares in row for match with element
 // x and y = where    element = what we are looking for 
-function matchRow(x, y, element) {
+function matchRowOLD(x, y, element) {
 	var testcount=0;
 
 
@@ -107,8 +218,8 @@ function matchRow(x, y, element) {
 // 	}
 // }
 
-databuilder(boardArray);
-printer();
+//databuilder(boardArray);
+//printer();
  
 // //		var y = key.y;/
 // 	//	console.log('x,y: ',x+' , '+y);
@@ -126,4 +237,7 @@ printer();
 // 	}
 // }
 
-findPossibles(sudokuObject);
+
+//findOptions(sudokuObject);
+
+//findPossibles(sudokuObject);

@@ -17,15 +17,30 @@
 								 	evaluateRow
 								  	evaluateColumn
 								 	evaluateCurrentSquare
-	 						assign value of x,y to valueArrayXY[] >>>> {eg: 3,5,8,9}
+	 						assign value of x,y to valueArrayXY[] >>>> {eg: 1,3,5,6}
 
 
-//   function rankSquaresByShortPossibleList (sudokuArray)
+
+for (i=1; i<10; i++)
+	{
+	function evaluateRelations(i){
+		evaluateRow();
+		evaluateColumn();
+		evaluateCurrentSquare();
+
+	write to possible array	
+	}
+
+	}
+
+
+
+  function rankSquaresByShortPossibleList (sudokuArray)
 		sort valueArrayXY[] by solutionLength
 			
 			EXAMPLE: 
 				x 1, y 1 is {3}
-				x 1, y 2 is {3,4,8,9}
+				x 1, y 2 is {4}
 				x 1, y 3 is {4,5,6,7,8,9}
 				 ETC.
 				)
@@ -34,9 +49,10 @@
 		For SolutionLength = 1 to 9
 			Fill in squareXY where valueArrayXY.length = solutionLength
 				Assign the first value in the valueArrayXY[] to the square XY in master boardString
-				
+
 
 //       
+
 
 				 
 

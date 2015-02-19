@@ -44,9 +44,5 @@ function boardPrinter() {
 
 
 //' 94   3  61 8  4  8   4    1  3 264 54 687 92 761 4  5    7   3  8  6 54  7   96 '
-
-<<<<<<< HEAD
-boardPrinter();
-=======
 module.exports = boardPrinter;
->>>>>>> 38c51a74f1db2507e41a2963eacaca167c1cdb30
+ 

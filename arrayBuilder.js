@@ -1,4 +1,4 @@
-var boardString = process.argv[2];
+var boardString = " 94   3  61 8  4  8   4    1  3 264 54 687 92 761 4  5    7   3  8  6 54  7   96 ";
 
 var boardArray = boardString.split('');
 
@@ -100,8 +100,8 @@ function dataBuilder(array, callback) {
   }
 
   })
-  console.log(boardData.length)
-    callback(boardData, rowValues, columnValues, blockValues);
+ 
+    callback(boardData );
 }
 
 // Possible relations addition
