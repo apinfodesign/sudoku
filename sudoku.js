@@ -1,3 +1,4 @@
+ 
 //how to read the object
 var read = sudokuObject['81'].x ;
 console.log("sudokuObject is " + sudokuObject);	
@@ -5,8 +6,13 @@ console.log("sudokuObject read is " + read ) ;
 
 //how to read the sudArray
 console.log("sudArray is " + sudArray[1][1].x);
-
-
+ 
+var databuilder = require('./databuilder.js')
+var printer = require('./boardprinter.js')
+var boardString = process.argv[2];
+var boardArray = boardString.split('');
+ 
+  
 function findPossibles(sudokuObject) {
 	var countnull=0;  //testing only
 	var row, column, squareNum;
@@ -68,7 +74,42 @@ function matchRow(x, y, element) {
 		}
 	}
 };
+ 
 
+// function findPossibles(sudokuObject) {
+// 	var row, column, squareNum;
+// 	for (var key in sudokuObject) {
+// 		var possibles = [];
+// 		var obj = sudokuObject[key];
+// 		var x = obj.x;
+// 		var y = obj.y;
+
+// 		if(obj.value === null){ 
+// 			for (var intVal = 1; intVal <= 9; intVal++){
+// 				matchRow(x, y, element);
+// 				//matchColumn(x, y, element);
+				
+// 				if (matchRow == false && matchColumn == false){
+// 					possibles.push();
+// 				}
+// 			}
+
+// 		}	
+// 	}
+// };	
+
+// function matchRow(x, y, element) {
+// 	for (i = 1; i <= 9; i++){
+// 		//extract the value of (x,i)
+// 		if(element === sudokuObject[]) {
+// 			console.log(element);
+// 	}
+// 	}
+// }
+
+databuilder(boardArray);
+printer();
+ 
 // //		var y = key.y;/
 // 	//	console.log('x,y: ',x+' , '+y);
 
