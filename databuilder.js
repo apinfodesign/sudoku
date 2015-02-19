@@ -43,6 +43,32 @@ var blockPopulator = function (index, xFinder) {
     return 9;
   };
 }
+function relationBuilder (start, end, step){
+  var relations = []
+    while (step > 0 ? end >= start : end <= start) {
+        relations.push(start);
+        start += step;
+    }
+    return relations;
+}
+function rowRelations(y){
+  var lines = [0,9,18,27,36,45,54,63,72,81];
+  
+  for (var i = 0; i < lines.length; i++) {
+    if (y <= lines[i]) {
+     return relationBuilder(lines[i-1], lines[i], 1);
+    }
+  };
+}
+function columnRelations(x) {
+  var columns = [1,2,3,4,5,6,7,8,9]
+  for (var i = 0; i < columns.length; i++) {
+    if(columns[i] === x){
+      return relationBuilder(columns[i], (columns[i] + 72), 9);
+    }
+  };
+
+}
 
 function dataBuilder(array) {
   var boardData = {};
@@ -50,10 +76,11 @@ function dataBuilder(array) {
   lines.forEach(function(value, index){
     for (var i = value; i < value+9; i++) {
       if(array[i] === ' '){
-        boardData[i+1] = {value: null, x: xFinder(i, index), y: (index + 1), block: blockPopulator((index + 1), xFinder(i, index))};
+        boardData[i+1] = {value: null, x: xFinder(i, index), y: (9 - index), block: blockPopulator((index + 1), xFinder(i, index)), row: rowRelations(i+1), column: columnRelations(xFinder(i, index))};
       } else {
-        boardData[i+1] = {value: parseInt(array[i]), x: xFinder(i, index), y: (index + 1), block: blockPopulator(index+1, xFinder(i, index))};}
+        boardData[i+1] = {value: parseInt(array[i]), x: xFinder(i, index), y: (9 - index), block: blockPopulator(index+1, xFinder(i, index)), row: rowRelations(i+1), column: columnRelations(xFinder(i, index))};
       };
+    }
 
   })
   console.log(boardData);
