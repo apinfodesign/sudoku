@@ -29,9 +29,7 @@
    { value: null, x: 2, y: 6, block: 4, possibles: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
    { value: null, x: 3, y: 6, block: 4, possibles: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
    { value: 3, x: 4, y: 6, block: 5 },
-   { value: null, x: 5, y: 6, block: 5, possibles: [1, 2, 3, 4, 5, 6, 7, 8, 9]
-
-[11:53 AM] russdubrock: },
+   { value: null, x: 5, y: 6, block: 5, possibles: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
    { value: 2, x: 6, y: 6, block: 5 },
    { value: 6, x: 7, y: 6, block: 6 },
    { value: 4, x: 8, y: 6, block: 6 },
