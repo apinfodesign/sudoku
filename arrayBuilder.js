@@ -84,31 +84,23 @@ function dataBuilder(array, callback) {
   var lines = [0,9,18,27,36,45,54,63,72];
   lines.forEach(function(value, index){
     rowValues[index] = [];
-
-    blockValues[blockPopulator(index+1, x)] = []
+    subArray = []
     for (var i = value; i < value+9; i++) {
       var x = xFinder(i, index);
       if(array[i] === ' '){
-        boardData[i] = {value: null, x: x, y: (9 - index), block: blockPopulator((index + 1), x), possibles: [1,2,3,4,5,6,7,8,9]};
+        subArray.push({value: null, x: x, y: (9 - index), block: blockPopulator((index + 1), x), possibles: [1,2,3,4,5,6,7,8,9]});
         
       } else {
-        boardData[i] = {value: parseInt(array[i]), x: x, y: (9 - index), block: blockPopulator(index+1, x)};
+        subArray.push({value: parseInt(array[i]), x: x, y: (9 - index), block: blockPopulator(index+1, x)});
         rowValues[index].push(parseInt(array[i]));
-        if (columnValues[x-1] === undefined) {
-          columnValues[x-1] = [];
-        } 
-        columnValues[x-1].push(parseInt(array[i]));
-        if (blockValues[blockPopulator(index+1,x)-1] === undefined) {
-          blockValues[blockPopulator(index+1,x)-1] = [];
-        } 
-
-        blockValues[blockPopulator(index+1,x)-1].push(parseInt(array[i]));
-
-      };
+      
+      
     }
+    boardData[index] = (subArray);
+  }
 
   })
-    blockValues.splice(blockValues.length-1);
+  console.log(boardData.length)
     callback(boardData, rowValues, columnValues, blockValues);
 }
 
@@ -121,4 +113,3 @@ function dataBuilder(array, callback) {
 // }
 
 module.exports = dataBuilder;
-

@@ -1,4 +1,4 @@
-var databuilder = require('./databuilder.js')
+var databuilder = require('./arraybuilder.js')
 var printer = require('./boardprinter.js')
 var boardString = process.argv[2];
 var boardArray = boardString.split('');
@@ -9,19 +9,8 @@ function rowChecker () {
 
 function findPossibles (object, rowValues, columnValues, blockValues, callback) {
  
-   for (var i = 1; i < object.length; i++) {
-    var value = object[i].value;
-    var x = object[i].x;
-    var y = object[i].y;
-    var row = object[i].row;
-    var column = object[i].column;
-    var block = object[i].block;
-    var possibles = object[i].possibles;
-
-
-
-   };
-
+   
+console.log(object);
     
         // if(value === null) {
     //   for (var i = 0; i < row.length; i++) {
