@@ -44,4 +44,4 @@ function boardPrinter() {
 
 
 
-module.exports = boardPrinter();
+module.exports = boardPrinter;

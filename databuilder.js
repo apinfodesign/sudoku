@@ -43,20 +43,73 @@ var blockPopulator = function (index, xFinder) {
     return 9;
   };
 }
+function relationBuilder (start, end, step){
+  var relations = []
+    while (step > 0 ? end >= start : end <= start) {
+        relations.push(start);
+        start += step;
+    }
+    return relations;
+}
+function rowRelations(y){
+  var lines = [1,10,19,28,37,46,55,64,73,82];
+  
+  for (var i = 0; i < lines.length; i++) {
+    if (y < lines[i]) {
+     return relationBuilder(lines[i-1], (lines[i]-1), 1);
+    }
+  };
+}
+function columnRelations(x) {
+  var columns = [1,2,3,4,5,6,7,8,9]
+  for (var i = 0; i < columns.length; i++) {
+    if(columns[i] === x){
+      return relationBuilder(columns[i], (columns[i] + 72), 9);
+    }
+  };
 
-function dataBuilder(array) {
-  var boardData = {};
+}
+
+function rowValues(x) {
+  var rowValues = [];
+  x()
+
+}
+
+function dataBuilder(array, callback) {
+  var boardData = [];
+  var rowValues = [];
+  var columnValues = [];
+  var blockValues = [];
   var lines = [0,9,18,27,36,45,54,63,72];
   lines.forEach(function(value, index){
+    rowValues[index] = [];
+
+    blockValues[blockPopulator(index+1, x)] = []
     for (var i = value; i < value+9; i++) {
+      var x = xFinder(i, index);
       if(array[i] === ' '){
-        boardData[i+1] = {value: null, x: xFinder(i, index), y: (index + 1), block: blockPopulator((index + 1), xFinder(i, index))};
+        boardData[i] = {value: null, x: x, y: (9 - index), block: blockPopulator((index + 1), x), possibles: [1,2,3,4,5,6,7,8,9]};
+        
       } else {
-        boardData[i+1] = {value: parseInt(array[i]), x: xFinder(i, index), y: (index + 1), block: blockPopulator(index+1, xFinder(i, index))};}
+        boardData[i] = {value: parseInt(array[i]), x: x, y: (9 - index), block: blockPopulator(index+1, x)};
+        rowValues[index].push(parseInt(array[i]));
+        if (columnValues[x-1] === undefined) {
+          columnValues[x-1] = [];
+        } 
+        columnValues[x-1].push(parseInt(array[i]));
+        if (blockValues[blockPopulator(index+1,x)-1] === undefined) {
+          blockValues[blockPopulator(index+1,x)-1] = [];
+        } 
+
+        blockValues[blockPopulator(index+1,x)-1].push(parseInt(array[i]));
+
       };
+    }
 
   })
-  console.log(boardData);
+    console.log(blockValues);
+    callback(boardData, rowValues, columnValues, blockValues);
 }
 
 // Possible relations addition
@@ -67,5 +120,5 @@ function dataBuilder(array) {
 //     }
 // }
 
-dataBuilder(boardArray);
+module.exports = dataBuilder;
 
