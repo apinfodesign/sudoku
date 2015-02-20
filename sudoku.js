@@ -15,6 +15,31 @@ databuilder(boardArray, findOptions);
 console.log('AFTER: ');
 printer(boardArray);
 
+databuilder(boardArray, findOptions);
+
+function findOptions(fullArray){
+	var row, col;
+	for (row=0; row<9; row++)
+		{
+		for (col=0; col<9; col++) {	
+			//console.log('row: ',row,'col: ',col);
+			//console.log("------------------");
+			//	console.log("row is " + row + " and col is " + col + " value is " 
+			//		+ fullArray[row][col].value + " and block is " + fullArray[row][col].block);
+			if (fullArray[row][col].value === null) {
+				checkRow(row,col,fullArray);    	//assemble and return possible values
+				checkCol(row,col,fullArray);			//assemble and return possible values
+				temprow=row+1;
+				tempcol=col+1;
+				boxDeletePossibles(fullArray[row][col].possibles, checkBlock(temprow, tempcol, fullArray));	//assemble and return possible values
+			}
+		}
+	}
+		insertSingletonValues(fullArray);
+		//logSingletonValues(fullArray);
+		//console.log(fullArray[3][1] )
+};
+
 function findOptions(fullArray){
 	var row, col;
 	for (row=0; row<9; row++)
@@ -25,18 +50,19 @@ function findOptions(fullArray){
 			//		+ fullArray[row][col].value + " and block is " + fullArray[row][col].block);
 				if (fullArray[row][col].value === null)
 					{
-					checkRow(row,col,fullArray);    	//assemble and return possible values
-					checkCol(row,col,fullArray);			//assemble and return possible values
-					temprow=row+1;
-					tempcol=col+1;
-					boxDeletePossibles(fullArray[row][col].possibles, checkBlock(temprow, tempcol, fullArray));	//assemble and return possible values
-				}
-		}
-	}
 
-	insertSingletonValues(fullArray);
-	//logSingletonValues(fullArray);
-};
+						checkRow(row,col,fullArray);    	//assemble and return possible values
+						checkCol(row,col,fullArray);			//assemble and return possible values
+						temprow=row+1;
+						tempcol=col+1;
+						boxDeletePossibles(fullArray[row][col].possibles, checkBlock(temprow, tempcol, fullArray));	//assemble and return possible values
+					}
+				}
+			}
+		//insertSingletonValues(fullArray);
+		logSingletonValues(fullArray);
+		//console.log(fullArray[3][1] )
+ 	};
 
 function logSingletonValues(fullArray){
 	//iterate through big array
@@ -49,8 +75,8 @@ function logSingletonValues(fullArray){
 		{
 			if (fullArray[row][col].possibles.length === 1)
 			{
-				console.log(fullArray[row][col].possibles + " is possibles.  xxxxxx" + 
-					fullArray[row][col].x + " zzzzz " + fullArray[row][col].y  );
+				console.log('possibles: ',fullArray[row][col].possibles,' x: ',fullArray[row][col].x,
+				'y: ',fullArray[row][col].y);
 			}
 		}
 	}
@@ -62,59 +88,81 @@ function insertSingletonValues(fullArray){
 	var row, col;
 	var lengthOne=0;
 	
-	for (row=0; row<9; row++)
-		{
-		for (col=0; col<9; col++)
-		{
-			if (fullArray[row][col].possibles.length === 1)
-			{
+	for (row=0; row<9; row++) {
+		for (col=0; col<9; col++) {
+			if (fullArray[row][col].possibles.length === 1) {
 				fullArray[row][col].value = fullArray[row][col].possibles[0];
 				lengthOne = lengthOne +1;	
+
 			}
 		}
 	}
 };
 
 
+function buildPrinterString(fullArray) {
+
+
+}
+
+//findOptions2(fullArray);
+			
+	// if (lengthOne=0){
+		 
+	// 	console.log("the fullArray is " + fullArray);
+
+			
+		 
+	// }
+	// else
+	// {   
+	// 	cycleCount =cycleCount+1;
+	// 	if (cycleCount < 100)
+	// 	{
+	// 		findOptions(fullArray);	
+	// 		console.log(" we are call findOptions ");
+	// 	}
+	// }
+
+
+
 
 function checkRow (row,col, fullArray){
- 	for (i = 0; i < 9; i++){	// iterate across columns
+ 	for (i = 0; i < 9; i++) {	// iterate across columns
  		//console.log(fullArray[row][col] + row + " " + col + "xxxxx");
- 		if  ( (fullArray[row][i].value !== null) && (fullArray[row][i] !== fullArray[row][col]) 
- 			)
- 		// if you find a null
- 		var toCheck = fullArray[row][i].value;
- 		  		{   //console.log("i is " + i);
- 				var possiblesList = fullArray[row][col].possibles;
-		 		deletePossibles(toCheck, possiblesList);
+ 		if ((fullArray[row][i].value !== null) && (fullArray[row][i] !== fullArray[row][col])) {
+ 			// if you find a null
+ 			var toCheck = fullArray[row][i].value;
+ 		 	//console.log("i is " + i);
+ 			var possiblesList = fullArray[row][col].possibles;
+		 	deletePossibles(toCheck, possiblesList);
    		}
   	}
 };
 
 function checkCol (row,col, fullArray){
- 	for (i = 0; i < 9; i++){	// iterate across rows
+ 	for (i = 0; i < 9; i++) {	// iterate across rows
  		//console.log(fullArray[row][col] + row + " " + col + "xxxxx");
- 		if  ( (fullArray[i][col].value !== null) && (fullArray[i][col] !== fullArray[row][col]) 
- 			)
+ 		if ((fullArray[i][col].value !== null) && (fullArray[i][col] !== fullArray[row][col])) {
  		// if you find a null
- 		var toCheck = fullArray[i][col].value;
- 	 		{    
- 			var possiblesList = fullArray[row][col].possibles;
-   			deletePossibles(toCheck, possiblesList);
+	 		var toCheck = fullArray[i][col].value;    
+	 		var possiblesList = fullArray[row][col].possibles;
+	   		deletePossibles(toCheck, possiblesList);
  		}
   	}
 };
 
 //iterate through possibles array and delete the toCheck element from possibles array
 function deletePossibles(toCheck, possiblesList){
+	if (possiblesList.indexOf(toCheck) >= 0) {
 		for (var i = 0; i < possiblesList.length; i++) {
- 				if (possiblesList[i] === toCheck) 
- 					{possiblesList.splice(i, 1);
- 					//console.log("fullArray.possibles is " + possiblesList  );
- 					return;
- 				};
- 			};
+			if (possiblesList[i] === toCheck) {
+				possiblesList.splice(i, 1);
+			};
+		};
+	};
 };
+
 
 function boxDeletePossibles(possiblesList, callback){
  	var array = callback;
