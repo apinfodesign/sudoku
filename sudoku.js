@@ -102,6 +102,23 @@ function insertSingletonValue(fullArray){
 
 
 			}
+		//solve for possibles array length of 2	
+		else if (fullArray[row][col].possibles.length === 2 && fullArray[row][col].value === null) ){
+			
+			//insert the first value of the 2 possibles
+			fullArray[row][col].value = fullArray[row][col].possibles[0];
+				console.log('Possibles=Two - Solving for Position Zero '); 
+				console.log('Singleton assigned at: ' + (col + 1) + ', ' + (9-row));
+				console.log('Block is: ' + fullArray[row][col].block);
+				console.log('Possibles Array for location is ' + fullArray[row][col].possibles[0] + 
+								" and " + fullArray[row][col].possibles[1] );
+				buildPrinterString(fullArray);
+
+				console.log("Calling findOptions after one singleton possibles added.")
+				findOptions(fullArray);
+			}
+
+
 		}
 	}
 
