@@ -12,7 +12,7 @@ var boardArray = boardString.split('');
  var cycleCount = 0;
 var cycleCountLimit = 20;
 var masterCycleCount = 0;
-var masterCycleCountLimit = 1000;
+var masterCycleCountLimit = 200;
 var arrayDepot = [];
 var arrayDepotIndex = 0;
 
@@ -54,10 +54,62 @@ function findOptions(fullArray){
 		console.log('cycle count: ' + cycleCount);
 		console.log('array depot index: ' + arrayDepotIndex);
 		console.log('array depot length ' + arrayDepot.length)
-		insertSingletonValues(fullArray);
+		//insertSingletonValues(fullArray);
+ 		insertSingletonValue(fullArray);   //insert ONLY ONE value
  
 };
 
+//Inserts only one singleton value prior to recalculation
+function insertSingletonValue(fullArray){
+	var possibleLengths = 0;
+	var row, col;
+	cycleCount = cycleCount +1;
+	
+	if (cycleCount === cycleCountLimit) {
+		cycleCount = 0;
+		console.log('calling findOptions from arrayDepot')
+
+		arrayDepotIndex = arrayDepotIndex + 1;
+		var arrayToPass = arrayDepotIndex - 1;
+		buildPrinterString(arrayDepot[arrayToPass]);
+		findOptions(arrayDepot[arrayToPass]);
+		return;
+		
+		
+	};
+	
+	for (row=0; row<9; row++) {
+		for (col=0; col<9; col++) {
+			if (fullArray[row][col].possibles.length === 1 && fullArray[row][col].value === null) {
+				possibleLengths = 1;
+				fullArray[row][col].value = fullArray[row][col].possibles[0];
+				console.log('Singleton assigned at: ' + (col + 1) + ', ' + (9-row));
+				console.log('Block is: ' + fullArray[row][col].block);
+				console.log('Possibles Array for location is ' + fullArray[row][col].possibles[0]);
+				buildPrinterString(fullArray);
+
+
+				//after finding ONE singleton, display something
+				if (possibleLengths === 0) {
+					console.log('NO NEW POSSIBLES ARRAYS WITH A LENGTH OF 1');
+					buildPrinterString(fullArray);
+					insertDupleValues(fullArray);
+				}
+
+				//after finding ONE singleton, find new options
+				console.log("Calling findOptions after one singleton possibles added.")
+				findOptions(fullArray);
+
+
+			}
+		}
+	}
+
+
+};
+
+
+//inserts all singleton values prior to recalculation?
 function insertSingletonValues(fullArray){
 	var possibleLengths = 0;
 	var row, col;
@@ -82,6 +134,8 @@ function insertSingletonValues(fullArray){
 				possibleLengths = 1;
 				fullArray[row][col].value = fullArray[row][col].possibles[0];
 				console.log('Singleton assigned at: ' + (col + 1) + ', ' + (9-row));
+				console.log('Block is: ' + fullArray[row][col].block);
+				console.log('Possibles Array for location is ' + fullArray[row][col].possibles[0]);
 				buildPrinterString(fullArray);
 			}
 		}
@@ -93,6 +147,10 @@ function insertSingletonValues(fullArray){
 	}
 	findOptions(fullArray);
 };
+
+
+
+
 
 function insertDupleValues(fullArray){
 	for (row=0; row<9; row++) {
