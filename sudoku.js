@@ -4,115 +4,65 @@ var checkBlock = require('./checkBlock.js');
 var printer = require('./boardprinter.js');
 var boardString = " 94   3  61 8  4  8   4    1  3 264 54 687 92 761 4  5    7   3  8  6 54  7   96 ";
 var boardArray = boardString.split('');
-var cycleCount=0;
+var cycleCount = 0;
+var cycleCountLimit = 20;
+
+var iterateControl = [' '];
+
 var doneArray;   //to pass from findOptions to logSingleton
 
 console.log('BEFORE: ');
-//printer(boardArray);
-
-
-console.log('AFTER: ');
-//printer(boardArray);
+printer(boardArray);
 
 databuilder(boardArray, findOptions);
 //set iteration control
 
-logSingletonValues(doneArray);
-
-function iterationControl(itNum, fullArray){
-	var i = itNum;
-	
-	for (i=0; i<itNum; i++)
-	{ 	console.log("iteration Number is " + i + " of " + itNum);
-
-		findOptions();
- 
- 		logSingletonValues(doneArray);
-
-		insertSingletonValues(doneArray);
-	}
-};
-
-
-
 function findOptions(fullArray){
 	var row, col;
+	var solvedSquares = 0;
 	for (row=0; row<9; row++) {
 		for (col=0; col<9; col++) {	
-			//console.log('row: ',row,'col: ',col);
-			//console.log("------------------");
-			//	console.log("row is " + row + " and col is " + col + " value is " 
-			//		+ fullArray[row][col].value + " and block is " + fullArray[row][col].block);
-			if (fullArray[row][col].value === null) {
-				checkRow(row,col,fullArray);    	//assemble and return possible values
-				checkCol(row,col,fullArray);			//assemble and return possible values
-				temprow=row+1;
-				tempcol=col+1;
-				boxDeletePossibles(fullArray[row][col].possibles, checkBlock(temprow, tempcol, fullArray));	//assemble and return possible values
-			}
-		}
-	}
-		insertSingletonValues(fullArray);
-		//logSingletonValues(fullArray);
-		//console.log(fullArray[3][1] )
-};
-
-function findOptions(fullArray){
-	var row, col;
-	for (row=0; row<9; row++) {
-		for (col=0; col<9; col++) {	//console.log("------------------");
-			//	console.log("row is " + row + " and col is " + col + " value is " 
-			//		+ fullArray[row][col].value + " and block is " + fullArray[row][col].block);
 				if (fullArray[row][col].value === null) {
-
+						solvedSquares = 1;
 						checkRow(row,col,fullArray);    	//assemble and return possible values
 						checkCol(row,col,fullArray);			//assemble and return possible values
-						temprow=row+1;
-						tempcol=col+1;
+						temprow = row+1;
+						tempcol = col+1;
 						boxDeletePossibles(fullArray[row][col].possibles, checkBlock(temprow, tempcol, fullArray));	//assemble and return possible values
-					}
 				}
-			}
-		}
-		insertSingletonValues(fullArray);
-		logSingletonValues(fullArray);
-		console.log(fullArray[3][1] )
-		doneArray = fullArray; 
- 	};
-
- 
-function logSingletonValues(fullArray) {
-	//iterate through big array
-	var row, col;
-	var lengthOne=0;
-	
-	for (row=0; row<9; row++) {
-		for (col=0; col<9; col++) {
-			if (fullArray[row][col].possibles.length === 1) {
-				//console.log('possibles: ',fullArray[row][col].possibles,' x: ',fullArray[row][col].x,
-				//'y: ',fullArray[row][col].y);
-			}
 		}
 	}
-}
+	if (solvedSquares === 0) {
+		console.log('NO MORE NULL VALUES: ');
+		buildPrinterString(fullArray);
+		return;
+	};
+		insertSingletonValues(fullArray);
+
+};
 
 function insertSingletonValues(fullArray){
-	buildPrinterString(fullArray);
-
-	//iterate through big array
+	var possibleLengths = 0;
 	var row, col;
-	var lengthOne=0;
-	countCycle = countCycle +1;
-	if (countCycle > countCycleLimit) {return};
+	cycleCount = cycleCount +1;
+	if (cycleCount > cycleCountLimit) {
+		console.log('cycle limit reached'); 
+		return;
+	};
 	
 	for (row=0; row<9; row++) {
 		for (col=0; col<9; col++) {
-			if (fullArray[row][col].possibles.length === 1) {
+			if (fullArray[row][col].possibles.length === 1 && fullArray[row][col].value === null) {
+				possibleLengths = 1;
 				fullArray[row][col].value = fullArray[row][col].possibles[0];
-				lengthOne = lengthOne +1;			
 			}
 		}
 	}
+	if (possibleLengths === 0) {
+		console.log('NO NEW POSSIBLES ARRAYS WITH A LENGTH OF 1');
+		buildPrinterString(fullArray);
+	}
+	findOptions(fullArray);
 };
 
 
