@@ -5,9 +5,30 @@ var checkBlock = require('./checkBlock.js');
 var boardString = " 94   3  61 8  4  8   4    1  3 264 54 687 92 761 4  5    7   3  8  6 54  7   96 ";
 var boardArray = boardString.split('');
 var cycleCount=0;
+var doneArray;   //to pass from findOptions to logSingleton
 
 
 databuilder(boardArray, findOptions);
+//set iteration control
+
+logSingletonValues(doneArray);
+
+function iterationControl(itNum, fullArray){
+	var i = itNum;
+	
+	for (i=0; i<itNum; i++)
+	{ 	console.log("iteration Number is " + i + " of " + itNum);
+
+		findOptions();
+ 
+ 		logSingletonValues(doneArray);
+
+		insertSingletonValues(doneArray);
+	}
+};
+
+
+
 
 function findOptions(fullArray){
 	var row, col;
@@ -27,46 +48,13 @@ function findOptions(fullArray){
 					}
 			}
 		}
-
 		insertSingletonValues(fullArray);
-		//logSingletonValues(fullArray);
-		console.log(fullArray[3][1] )
-
-
- 	};
-
-function findOptions2(fullArray){
-	var row, col;
-	for (row=0; row<9; row++)
-		{
-		for (col=0; col<9; col++)
-			{	//console.log("------------------");
-			//	console.log("row is " + row + " and col is " + col + " value is " 
-			//		+ fullArray[row][col].value + " and block is " + fullArray[row][col].block);
-				if (fullArray[row][col].value === null)
-					{
-					checkRow(row,col,fullArray);    	//assemble and return possible values
-					checkCol(row,col,fullArray);			//assemble and return possible values
-					temprow=row+1;
-					tempcol=col+1;
-					boxDeletePossibles(fullArray[row][col].possibles, checkBlock(temprow, tempcol, fullArray));	//assemble and return possible values
-					}
-			}
-		}
-
-		//insertSingletonValues(fullArray);
 		logSingletonValues(fullArray);
 		console.log(fullArray[3][1] )
-
-
+		doneArray = fullArray; 
  	};
 
-
-
-
-
-
-
+ 
 function logSingletonValues(fullArray){
 	//iterate through big array
 	var row, col;
@@ -78,18 +66,19 @@ function logSingletonValues(fullArray){
 		{
 			if (fullArray[row][col].possibles.length === 1)
 			{
-				console.log(fullArray[row][col].possibles + " is possibles.  xxxxxx" + 
+				console.log(fullArray[row][col].possibles + " is possibles.  xxxxxx " + 
 					fullArray[row][col].x + " zzzzz " + fullArray[row][col].y  );
 			}
 		}
 	}
 }
 
-
 function insertSingletonValues(fullArray){
 	//iterate through big array
 	var row, col;
 	var lengthOne=0;
+	countCycle = countCycle +1;
+	if (countCycle > countCycleLimit) {return};
 	
 	for (row=0; row<9; row++)
 		{
@@ -98,31 +87,10 @@ function insertSingletonValues(fullArray){
 			if (fullArray[row][col].possibles.length === 1)
 			{
 				fullArray[row][col].value = fullArray[row][col].possibles[0];
-				lengthOne = lengthOne +1;
-			
+				lengthOne = lengthOne +1;			
 			}
 		}
-
 	}
-findOptions2(fullArray);
-			
-	// if (lengthOne=0){
-		 
-	// 	console.log("the fullArray is " + fullArray);
-
-			
-		 
-	// }
-	// else
-	// {   
-	// 	cycleCount =cycleCount+1;
-	// 	if (cycleCount < 100)
-	// 	{
-	// 		findOptions(fullArray);	
-	// 		console.log(" we are call findOptions ");
-	// 	}
-	// }
-
 };
 
 
