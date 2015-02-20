@@ -10,9 +10,9 @@ var boardString = "8  2    5  97    4 25 1  9 2    7   96 3 1 52   6    1 8  4 7
 var boardArray = boardString.split('');
 
 var cycleCount = 0;
-var cycleCountLimit = 6;
+var cycleCountLimit = 50;
 var masterCycleCount = 0;
-var masterCycleCountLimit = 15;
+var masterCycleCountLimit = 1000;
 
 var arrayDepot = [];
 var arrayDepotIndex = 0;
@@ -70,11 +70,10 @@ function insertSingletonValue(fullArray){
 	if (cycleCount === cycleCountLimit) {
 		cycleCount = 0;
 		console.log('calling findOptions from arrayDepot')
-
 		arrayDepotIndex = arrayDepotIndex + 1;
-		var arrayToPass = arrayDepotIndex - 1;
-		buildPrinterString(arrayDepot[arrayToPass]);
-		findOptions(arrayDepot[arrayToPass]);
+
+		buildPrinterString(arrayDepot[0]);
+		findOptions(arrayDepot.shift());
 
 	};
 	
@@ -87,13 +86,7 @@ function insertSingletonValue(fullArray){
 				console.log('Block is: ' + fullArray[row][col].block);
 				console.log('Possibles Array for location is ' + fullArray[row][col].possibles[0]);
 				buildPrinterString(fullArray);
-
-
-				//after finding ONE singleton, display something
-				
 				findOptions(fullArray);
-
-
 			}
 		}
 	}
@@ -103,62 +96,25 @@ function insertSingletonValue(fullArray){
 		insertDupleValues(fullArray);
 	}
 };
-//inserts all singleton values prior to recalculation?
-function insertSingletonValues(fullArray){
-	var possibleLengths = 0;
-	var row, col;
-	cycleCount = cycleCount +1;
-	
-	if (cycleCount === cycleCountLimit) {
-		cycleCount = 0;
-		console.log('calling findOptions from arrayDepot')
-		arrayDepotIndex = arrayDepotIndex + 1;
-		var arrayToPass = arrayDepotIndex - 1;
-		buildPrinterString(arrayDepot[arrayToPass]);
-		findOptions(arrayDepot[arrayToPass]);
-	};
-	
-	for (row=0; row<9; row++) {
-		for (col=0; col<9; col++) {
-			if (fullArray[row][col].possibles.length === 1 && fullArray[row][col].value === null) {
-				possibleLengths = 1;
-				fullArray[row][col].value = fullArray[row][col].possibles[0];
-				console.log('Singleton assigned at: ' + (col + 1) + ', ' + (9-row));
-				console.log('Block is: ' + fullArray[row][col].block);
-				console.log('Possibles Array for location is ' + fullArray[row][col].possibles[0]);
-				buildPrinterString(fullArray);
-			}
-		}
-	}
-	if (possibleLengths === 0) {
-		console.log('NO NEW POSSIBLES ARRAYS WITH A LENGTH OF 1');
-		buildPrinterString(fullArray);
-		insertDupleValues(fullArray);
-	}
-	findOptions(fullArray);
-};
-
-
-
-
 
 function insertDupleValues(fullArray){
 	for (row=0; row<9; row++) {
 		for (col=0; col<9; col++) {
 			if (fullArray[row][col].possibles.length === 2 && fullArray[row][col].value === null) {
-				var secondChoice = fullArray;
+				
+				//clone fullArray
+				var secondChoice = clone(fullArray);
+				//set secondchoice value to SECOND possibility
 				secondChoice[row][col].value = secondChoice[row][col].possibles[1];
-				console.log('first possible choice ' + fullArray[row][col].value);
+				//send full Array clone to arrayDepot
 				arrayDepot.push(secondChoice);
+				//set fullArray value to FIRST possibility
 				fullArray[row][col].value = fullArray[row][col].possibles[0];
 				console.log('duple assigned at ' + (col + 1) + ', ' + (9-row));
 				buildPrinterString(fullArray);
-				console.log('Other dupel possible ')
-;
-				buildPrinterString(arrayDepot[arrayDepotIndex]);
+				console.log('Other dupel possible ');
+				buildPrinterString(arrayDepot[arrayDepot.length-1]);
 				findOptions(fullArray);
-
-				return;
 			}
 		}
 	}
@@ -219,4 +175,17 @@ function boxDeletePossibles(possiblesList, callback){
 		deletePossibles(value, possiblesList);
 	})
 };
+
+function clone (existingArray) {
+   var newObj = (existingArray instanceof Array) ? [] : {};
+   for (i in existingArray) {
+      if (i == 'clone') continue;
+      if (existingArray[i] && typeof existingArray[i] == "object") {
+         newObj[i] = clone(existingArray[i]);
+      } else {
+         newObj[i] = existingArray[i]
+      }
+   }
+   return newObj;
+}
 
