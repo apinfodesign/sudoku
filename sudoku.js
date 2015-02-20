@@ -1,17 +1,19 @@
 var databuilder = require('./arraybuilder.js')
 var printer = require('./boardprinter.js')
 var checkBlock = require('./checkBlock.js');
-//var printer = require('./boardprinter.js');
+var printer = require('./boardprinter.js');
 //var boardString = process.argv[2];
 var boardString = " 94   3  61 8  4  8   4    1  3 264 54 687 92 761 4  5    7   3  8  6 54  7   96 ";
 var boardArray = boardString.split('');
 var cycleCount=0;
 
-console.log(typeof boardString);
+console.log('BEFORE: ');
+printer(boardArray);
 
 databuilder(boardArray, findOptions);
-<<<<<<< HEAD
-=======
+
+console.log('AFTER: ');
+printer(boardArray);
 
 function findOptions(fullArray){
 	var row, col;
@@ -67,31 +69,10 @@ function insertSingletonValues(fullArray){
 			if (fullArray[row][col].possibles.length === 1)
 			{
 				fullArray[row][col].value = fullArray[row][col].possibles[0];
-				lengthOne = lengthOne +1;
-			
+				lengthOne = lengthOne +1;	
 			}
 		}
-
 	}
-findOptions2(fullArray);
-			
-	// if (lengthOne=0){
-		 
-	// 	console.log("the fullArray is " + fullArray);
-
-			
-		 
-	// }
-	// else
-	// {   
-	// 	cycleCount =cycleCount+1;
-	// 	if (cycleCount < 100)
-	// 	{
-	// 		findOptions(fullArray);	
-	// 		console.log(" we are call findOptions ");
-	// 	}
-	// }
-
 };
 
 
