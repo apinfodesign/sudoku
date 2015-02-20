@@ -9,9 +9,9 @@ var printer = require('./boardprinter.js');
 var boardString = "8  2    5  97    4 25 1  9 2    7   96 3 1 52   6    1 8  4 73 7    65  3    8  9"
 var boardArray = boardString.split('');
 var cycleCount = 0;
-var cycleCountLimit = 20;
+var cycleCountLimit = 6;
 var masterCycleCount = 0;
-var masterCycleCountLimit = 1000;
+var masterCycleCountLimit = 15;
 var arrayDepot = [];
 var arrayDepotIndex = 0;
 var iterateControl = [' '];
@@ -29,8 +29,9 @@ function findOptions(fullArray){
 	var solvedSquares = 0;
 	masterCycleCount = masterCycleCount + 1;
 	if (masterCycleCount >= masterCycleCountLimit){
-					return console.log('Master Cycle Limit Exceeded');
-	}
+					console.log('Master Cycle Limit Exceeded');
+
+					return 	}
 	for (row=0; row<9; row++) {
 		for (col=0; col<9; col++) {	
 				
@@ -65,14 +66,10 @@ function insertSingletonValues(fullArray){
 	if (cycleCount === cycleCountLimit) {
 		cycleCount = 0;
 		console.log('calling findOptions from arrayDepot')
-
 		arrayDepotIndex = arrayDepotIndex + 1;
 		var arrayToPass = arrayDepotIndex - 1;
 		buildPrinterString(arrayDepot[arrayToPass]);
 		findOptions(arrayDepot[arrayToPass]);
-		return;
-		
-		
 	};
 	
 	for (row=0; row<9; row++) {
@@ -97,11 +94,16 @@ function insertDupleValues(fullArray){
 	for (row=0; row<9; row++) {
 		for (col=0; col<9; col++) {
 			if (fullArray[row][col].possibles.length === 2 && fullArray[row][col].value === null) {
-				fullArray[row][col].value = fullArray[row][col].possibles[1];
-				arrayDepot.push(fullArray);
+				var secondChoice = fullArray;
+				secondChoice[row][col].value = secondChoice[row][col].possibles[1];
+				console.log('first possible choice ' + fullArray[row][col].value);
+				arrayDepot.push(secondChoice);
 				fullArray[row][col].value = fullArray[row][col].possibles[0];
 				console.log('duple assigned at ' + (col + 1) + ', ' + (9-row));
 				buildPrinterString(fullArray);
+				console.log('Other dupel possible ')
+;
+				buildPrinterString(arrayDepot[arrayDepotIndex]);
 				findOptions(fullArray);
 
 				return;
