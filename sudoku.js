@@ -5,8 +5,8 @@ var printer = require('./boardprinter.js');
 var boardString = " 94   3  61 8  4  8   4    1  3 264 54 687 92 761 4  5    7   3  8  6 54  7   96 ";
 var boardArray = boardString.split('');
  
-var countCycle=0;
-var countCycleLimit=10;
+var cycleCount=0;
+var cycleCountLimit=20;
 
 var doneArray;   //to pass from findOptions to logSingleton
  
