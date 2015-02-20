@@ -103,7 +103,7 @@ function insertSingletonValue(fullArray){
 
 			}
 		//solve for possibles array length of 2	
-		else if (fullArray[row][col].possibles.length === 2 && fullArray[row][col].value === null) ){
+		else if (fullArray[row][col].possibles.length === 2 && fullArray[row][col].value === null) {
 			
 			//insert the first value of the 2 possibles
 			fullArray[row][col].value = fullArray[row][col].possibles[0];
