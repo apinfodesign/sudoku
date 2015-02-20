@@ -8,12 +8,15 @@ var checkBlock = require('./checkBlock.js');
 var printer = require('./boardprinter.js');
 var boardString = "8  2    5  97    4 25 1  9 2    7   96 3 1 52   6    1 8  4 73 7    65  3    8  9"
 var boardArray = boardString.split('');
+
 var cycleCount = 0;
 var cycleCountLimit = 6;
 var masterCycleCount = 0;
 var masterCycleCountLimit = 15;
+
 var arrayDepot = [];
 var arrayDepotIndex = 0;
+
 var iterateControl = [' '];
 
 var doneArray;   //to pass from findOptions to logSingleton
@@ -33,10 +36,9 @@ function findOptions(fullArray){
 
 					return 	}
 	for (row=0; row<9; row++) {
-		for (col=0; col<9; col++) {	
-				
+		for (col=0; col<9; col++) {					
 				if (fullArray[row][col].value === null) {
-						solvedSquares = 1;
+ 						solvedSquares = 1;
 						checkRow(row,col,fullArray);    	//assemble and return possible values
 						checkCol(row,col,fullArray);			//assemble and return possible values
 						temprow = row+1;
@@ -54,10 +56,54 @@ function findOptions(fullArray){
 		console.log('cycle count: ' + cycleCount);
 		console.log('array depot index: ' + arrayDepotIndex);
 		console.log('array depot length ' + arrayDepot.length)
-		insertSingletonValues(fullArray);
-
+		//insertSingletonValues(fullArray);
+ 		insertSingletonValue(fullArray);   //insert ONLY ONE value
+ 
 };
 
+//Inserts only one singleton value prior to recalculation
+function insertSingletonValue(fullArray){
+	var possibleLengths = 0;
+	var row, col;
+	cycleCount = cycleCount +1;
+	
+	if (cycleCount === cycleCountLimit) {
+		cycleCount = 0;
+		console.log('calling findOptions from arrayDepot')
+
+		arrayDepotIndex = arrayDepotIndex + 1;
+		var arrayToPass = arrayDepotIndex - 1;
+		buildPrinterString(arrayDepot[arrayToPass]);
+		findOptions(arrayDepot[arrayToPass]);
+
+	};
+	
+	for (row=0; row<9; row++) {
+		for (col=0; col<9; col++) {
+			if (fullArray[row][col].possibles.length === 1 && fullArray[row][col].value === null) {
+				possibleLengths = 1;
+				fullArray[row][col].value = fullArray[row][col].possibles[0];
+				console.log('Singleton assigned at: ' + (col + 1) + ', ' + (9-row));
+				console.log('Block is: ' + fullArray[row][col].block);
+				console.log('Possibles Array for location is ' + fullArray[row][col].possibles[0]);
+				buildPrinterString(fullArray);
+
+
+				//after finding ONE singleton, display something
+				
+				findOptions(fullArray);
+
+
+			}
+		}
+	}
+	if (possibleLengths === 0) {
+		console.log('NO NEW POSSIBLES ARRAYS WITH A LENGTH OF 1');
+		buildPrinterString(fullArray);
+		insertDupleValues(fullArray);
+	}
+};
+//inserts all singleton values prior to recalculation?
 function insertSingletonValues(fullArray){
 	var possibleLengths = 0;
 	var row, col;
@@ -78,6 +124,8 @@ function insertSingletonValues(fullArray){
 				possibleLengths = 1;
 				fullArray[row][col].value = fullArray[row][col].possibles[0];
 				console.log('Singleton assigned at: ' + (col + 1) + ', ' + (9-row));
+				console.log('Block is: ' + fullArray[row][col].block);
+				console.log('Possibles Array for location is ' + fullArray[row][col].possibles[0]);
 				buildPrinterString(fullArray);
 			}
 		}
@@ -89,6 +137,10 @@ function insertSingletonValues(fullArray){
 	}
 	findOptions(fullArray);
 };
+
+
+
+
 
 function insertDupleValues(fullArray){
 	for (row=0; row<9; row++) {
