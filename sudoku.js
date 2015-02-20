@@ -1,23 +1,22 @@
 //PUZZLES SOLVED
 //" 94   3  61 8  4  8   4    1  3 264 54 687 92 761 4  5    7   3  8  6 54  7   96 "
 //"   8 3 42  6  9  332   4 9  75 9  6 6  185  7 8  4 93  3 4   515  7  2  26 9 1   "
+//"8  2    5  97    4 25 1  9 2    7   96 3 1 52   6    1 8  4 73 7    65  3    8  9"
+//"7      4 2 9 416      6   11   7  8 8 74132 9 9  8   56   2      413 8 2 8      6"
+//"2 97   3    954 7    3 1  8 5  4 7   2 5 8 1   4 6  2 4  8 5    3 412    8   71 3"
+//"   3  8 6    793  13 8      2 6  9  96     74  8  5 1      6 93  348    2 6  3   ";
 
 var databuilder = require('./arraybuilder.js')
 var printer = require('./boardprinter.js')
 var checkBlock = require('./checkBlock.js');
 var printer = require('./boardprinter.js');
-var boardString = "8  2    5  97    4 25 1  9 2    7   96 3 1 52   6    1 8  4 73 7    65  3    8  9"
+var boardString = "  76   32 1   38  6   4        9   3 8  5  2 5   6        1   7  98   6 87   64  ";
 var boardArray = boardString.split('');
 
-var cycleCount = 0;
-var cycleCountLimit = 50;
 var masterCycleCount = 0;
 var masterCycleCountLimit = 1000;
 
 var arrayDepot = [];
-var arrayDepotIndex = 0;
-
-var iterateControl = [' '];
 
 var doneArray;   //to pass from findOptions to logSingleton
 
@@ -53,8 +52,6 @@ function findOptions(fullArray){
 		return;
 	};
 		console.log('master cycle count: ' + masterCycleCount);
-		console.log('cycle count: ' + cycleCount);
-		console.log('array depot index: ' + arrayDepotIndex);
 		console.log('array depot length ' + arrayDepot.length)
 		//insertSingletonValues(fullArray);
  		insertSingletonValue(fullArray);   //insert ONLY ONE value
@@ -65,17 +62,6 @@ function findOptions(fullArray){
 function insertSingletonValue(fullArray){
 	var possibleLengths = 0;
 	var row, col;
-	cycleCount = cycleCount +1;
-	
-	if (cycleCount === cycleCountLimit) {
-		cycleCount = 0;
-		console.log('calling findOptions from arrayDepot')
-		arrayDepotIndex = arrayDepotIndex + 1;
-
-		buildPrinterString(arrayDepot[0]);
-		findOptions(arrayDepot.shift());
-
-	};
 	
 	for (row=0; row<9; row++) {
 		for (col=0; col<9; col++) {
@@ -98,10 +84,11 @@ function insertSingletonValue(fullArray){
 };
 
 function insertDupleValues(fullArray){
+	var duplePossibles = 0;
 	for (row=0; row<9; row++) {
 		for (col=0; col<9; col++) {
 			if (fullArray[row][col].possibles.length === 2 && fullArray[row][col].value === null) {
-				
+				duplePossibles = 1;
 				//clone fullArray
 				var secondChoice = clone(fullArray);
 				//set secondchoice value to SECOND possibility
@@ -117,6 +104,9 @@ function insertDupleValues(fullArray){
 				findOptions(fullArray);
 			}
 		}
+	}
+	if(duplePossibles === 0){
+		findOptions(arrayDepot.shift());
 	}
 }
 
