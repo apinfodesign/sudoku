@@ -9,32 +9,14 @@ function rowChecker () {
 
 function findPossibles (object, rowValues, columnValues, blockValues, callback) {
  
-   
+for (var i = 0; i < object.length; i++) {
+     for (var i = 0; i < Things.length; i++) {
+       Things[i]
+     };
+   };   
 console.log(object);
     
-        // if(value === null) {
-    //   for (var i = 0; i < row.length; i++) {
-    //     var keyCheck = row[i];
-        
-    //     if(object[keyCheck].value != null){
-    //       for (var i = 0; i < possibles.length; i++) {
-    //         if(possibles[i] === object[keyCheck].value) {
-    //           possibles.splice(i);
-    //           console.log(object[1].possibles);
-    //           return
-    //         }
-    //       };
-    //     };
-    // //     var possibleToRemove = object[row[i]].value;
-    // //     for (var i = 0; i < possibles.length; i++) {
-    // //       console.log('in third for loop')
-    // //       if (possibles[i] === possibleToRemove) {
-    // //         possibles.splice(i);
-            
-    // //       };
-    // //     }
-    //   };
-    // }
+ 
 
   
   // callback(object);
