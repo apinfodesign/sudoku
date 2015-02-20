@@ -91,7 +91,7 @@ function dataBuilder(array, callback) {
         subArray.push({value: null, x: x, y: (9 - index), block: blockPopulator((index + 1), x), possibles: [1,2,3,4,5,6,7,8,9]});
         
       } else {
-        subArray.push({value: parseInt(array[i]), x: x, y: (9 - index), block: blockPopulator(index+1, x)});
+        subArray.push({value: parseInt(array[i]), x: x, y: (9 - index), block: blockPopulator(index+1, x), possibles: [parseInt(array[i])]});
         rowValues[index].push(parseInt(array[i]));
       
       
