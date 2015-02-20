@@ -4,7 +4,9 @@ var checkBlock = require('./checkBlock.js');
 var printer = require('./boardprinter.js');
 var boardString = " 94   3  61 8  4  8   4    1  3 264 54 687 92 761 4  5    7   3  8  6 54  7   96 ";
 var boardArray = boardString.split('');
-var cycleCount=0;
+var countCycle=0;
+var countCycleLimit=10;
+
 var doneArray;   //to pass from findOptions to logSingleton
 
 console.log('BEFORE: ');
@@ -63,22 +65,21 @@ function findOptions(fullArray){
 		for (col=0; col<9; col++) {	//console.log("------------------");
 			//	console.log("row is " + row + " and col is " + col + " value is " 
 			//		+ fullArray[row][col].value + " and block is " + fullArray[row][col].block);
-				if (fullArray[row][col].value === null) {
+			if (fullArray[row][col].value === null) {
 
-						checkRow(row,col,fullArray);    	//assemble and return possible values
-						checkCol(row,col,fullArray);			//assemble and return possible values
-						temprow=row+1;
-						tempcol=col+1;
-						boxDeletePossibles(fullArray[row][col].possibles, checkBlock(temprow, tempcol, fullArray));	//assemble and return possible values
-					}
-				}
+				checkRow(row,col,fullArray);    	//assemble and return possible values
+				checkCol(row,col,fullArray);			//assemble and return possible values
+				temprow=row+1;
+				tempcol=col+1;
+				boxDeletePossibles(fullArray[row][col].possibles, checkBlock(temprow, tempcol, fullArray));	//assemble and return possible values
 			}
 		}
-		insertSingletonValues(fullArray);
-		logSingletonValues(fullArray);
-		console.log(fullArray[3][1] )
-		doneArray = fullArray; 
- 	};
+	}
+	insertSingletonValues(fullArray);
+	logSingletonValues(fullArray);
+	console.log(fullArray[3][1] )
+	doneArray = fullArray; 
+};
 
  
 function logSingletonValues(fullArray) {
