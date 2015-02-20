@@ -6,31 +6,38 @@ var printer = require('./boardprinter.js');
 var boardString = " 94   3  61 8  4  8   4    1  3 264 54 687 92 761 4  5    7   3  8  6 54  7   96 ";
 var boardArray = boardString.split('');
 var cycleCount=0;
-
+var lengthOne = [' '];
+var iterateControl = [' '];
 console.log('BEFORE: ');
 printer(boardArray);
 
 databuilder(boardArray, findOptions);
 
-console.log('AFTER: ');
-printer(boardArray);
+
 
 function findOptions(fullArray){
 	var row, col;
-	for (row=0; row<9; row++)
-		{
-		for (col=0; col<9; col++)
-			{	//console.log("------------------");
-			//	console.log("row is " + row + " and col is " + col + " value is " 
-			//		+ fullArray[row][col].value + " and block is " + fullArray[row][col].block);
-				if (fullArray[row][col].value === null)
-					{
-					checkRow(row,col,fullArray);    	//assemble and return possible values
-					checkCol(row,col,fullArray);			//assemble and return possible values
-					temprow=row+1;
-					tempcol=col+1;
-					boxDeletePossibles(fullArray[row][col].possibles, checkBlock(temprow, tempcol, fullArray));	//assemble and return possible values
-				}
+	if (lengthOne.length > 2){
+		console.log('DID THIS two TIMES --------------------')
+		return
+
+	} else {
+		for (row=0; row<9; row++)
+			{
+			for (col=0; col<9; col++)
+				{	//console.log("------------------");
+				//	console.log("row is " + row + " and col is " + col + " value is " 
+				//		+ fullArray[row][col].value + " and block is " + fullArray[row][col].block);
+					if (fullArray[row][col].value === null)
+						{
+						checkRow(row,col,fullArray);    	//assemble and return possible values
+						checkCol(row,col,fullArray);			//assemble and return possible values
+						temprow=row+1;
+						tempcol=col+1;
+						boxDeletePossibles(fullArray[row][col].possibles, checkBlock(temprow, tempcol, fullArray));
+						iterateControl.push(' ');	//assemble and return possible values
+					}
+			}
 		}
 	}
 
@@ -59,20 +66,21 @@ function logSingletonValues(fullArray){
 
 function insertSingletonValues(fullArray){
 	//iterate through big array
+	console.log('once');
 	var row, col;
-	var lengthOne=0;
-	
 	for (row=0; row<9; row++)
 		{
 		for (col=0; col<9; col++)
 		{
-			if (fullArray[row][col].possibles.length === 1)
+			if (fullArray[row][col].possibles.length === 1 && lengthOne < 10)
 			{
 				fullArray[row][col].value = fullArray[row][col].possibles[0];
-				lengthOne = lengthOne +1;	
+				;	
 			}
 		}
 	}
+	lengthOne.push(' ')
+	findOptions(fullArray);
 };
 
 
