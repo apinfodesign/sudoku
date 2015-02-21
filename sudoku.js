@@ -5,16 +5,19 @@
 //"7      4 2 9 416      6   11   7  8 8 74132 9 9  8   56   2      413 8 2 8      6"
 //"2 97   3    954 7    3 1  8 5  4 7   2 5 8 1   4 6  2 4  8 5    3 412    8   71 3"
 //"   3  8 6    793  13 8      2 6  9  96     74  8  5 1      6 93  348    2 6  3   ";
+//"  76   32 1   38  6   4        9   3 8  5  2 5   6        1   7  98   6 87   64  ";
+//NOT SOLVED
 
 var databuilder = require('./arraybuilder.js')
 var printer = require('./boardprinter.js')
 var checkBlock = require('./checkBlock.js');
 var printer = require('./boardprinter.js');
-var boardString = "  76   32 1   38  6   4        9   3 8  5  2 5   6        1   7  98   6 87   64  ";
+var boardString = "  2  1  8 1  8  6 7  2  1  8  1  9   7  2  3   6  4  2  1  6  5 3  1  9 5  9  4  ";
+
 var boardArray = boardString.split('');
 
 var masterCycleCount = 0;
-var masterCycleCountLimit = 1000;
+var masterCycleCountLimit = 5000;
 
 var arrayDepot = [];
 
@@ -53,7 +56,6 @@ function findOptions(fullArray){
 	};
 		console.log('master cycle count: ' + masterCycleCount);
 		console.log('array depot length ' + arrayDepot.length)
-		//insertSingletonValues(fullArray);
  		insertSingletonValue(fullArray);   //insert ONLY ONE value
  
 };
@@ -65,22 +67,23 @@ function insertSingletonValue(fullArray){
 	
 	for (row=0; row<9; row++) {
 		for (col=0; col<9; col++) {
+			
 			if (fullArray[row][col].possibles.length === 1 && fullArray[row][col].value === null) {
 				possibleLengths = 1;
 				fullArray[row][col].value = fullArray[row][col].possibles[0];
 				console.log('Singleton assigned at: ' + (col + 1) + ', ' + (9-row));
 				console.log('Block is: ' + fullArray[row][col].block);
-				console.log('Possibles Array for location is ' + fullArray[row][col].possibles[0]);
 				buildPrinterString(fullArray);
 				findOptions(fullArray);
 			}
 		}
 	}
-	if (possibleLengths === 0) {
+	if (possibleLengths === 0) { 
 		console.log('NO NEW POSSIBLES ARRAYS WITH A LENGTH OF 1');
 		buildPrinterString(fullArray);
 		insertDupleValues(fullArray);
 	}
+
 };
 
 function insertDupleValues(fullArray){
@@ -105,9 +108,6 @@ function insertDupleValues(fullArray){
 			}
 		}
 	}
-	if(duplePossibles === 0){
-		findOptions(arrayDepot.shift());
-	}
 }
 
 
@@ -131,7 +131,7 @@ function checkRow (row,col, fullArray){
  			// if you find a null
  			var toCheck = fullArray[row][i].value;
  			var possiblesList = fullArray[row][col].possibles;
-		 	deletePossibles(toCheck, possiblesList);
+ 					 	deletePossibles(toCheck, possiblesList);
    		}
   	}
 };
@@ -149,10 +149,19 @@ function checkCol (row,col, fullArray){
 
 //iterate through possibles array and delete the toCheck element from possibles array
 function deletePossibles(toCheck, possiblesList){
-	if (possiblesList.indexOf(toCheck) >= 0) {
+
+
+	if (possiblesList.indexOf(toCheck) > -1) {
 		for (var i = 0; i < possiblesList.length; i++) {
 			if (possiblesList[i] === toCheck) {
-				possiblesList.splice(i, 1);
+				if (possiblesList.length < 2) {
+ 					console.log('ERRROOORR CHECKER WORKED ___________________________ ON SQUARE ')
+					console.log(arrayDepot[0][0]['possibles'])
+					findOptions(arrayDepot.shift());
+				} else {
+					possiblesList.splice(i, 1);
+				}
+				
 			};
 		};
 	};
