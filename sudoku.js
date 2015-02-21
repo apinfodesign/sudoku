@@ -5,33 +5,28 @@
 //"7      4 2 9 416      6   11   7  8 8 74132 9 9  8   56   2      413 8 2 8      6"
 //"2 97   3    954 7    3 1  8 5  4 7   2 5 8 1   4 6  2 4  8 5    3 412    8   71 3"
 //"   3  8 6    793  13 8      2 6  9  96     74  8  5 1      6 93  348    2 6  3   ";
+//"45     3    8 1    9           5  9 2  7     8         1  4          7 2   6  8  "
 
 var databuilder = require('./arraybuilder.js')
 var printer = require('./boardprinter.js')
 var checkBlock = require('./checkBlock.js');
 var printer = require('./boardprinter.js');
-var boardString = "  76   32 1   38  6   4        9   3 8  5  2 5   6        1   7  98   6 87   64  ";
+
+var boardString = "45     3    8 1    9           5  9 2  7     8         1  4          7 2   6  8  ";
+//var boardString = "  76   32 1   38  6   4        9   3 8  5  2 5   6        1   7  98   6 87   64  ";
 var boardArray = boardString.split('');
-  
- var cycleCount = 0;
-var cycleCountLimit = 200;
 var masterCycleCount = 0;
-var masterCycleCountLimit = 1000;
+var masterCycleCountLimit = 5000;
 var arrayDepot = [];
-var arrayDepotIndex = 0;
  
-var masterCycleCount = 0;
-var masterCycleCountLimit = 1000;
- 
-var arrayDepot = [];
-
-var doneArray;   //to pass from findOptions to logSingleton
-
 console.log('BEFORE: ');
 printer(boardArray);
 
 databuilder(boardArray, findOptions);
 //set iteration control
+
+
+
 
 function findOptions(fullArray){
 	var row, col;
@@ -54,7 +49,7 @@ function findOptions(fullArray){
 		}
 	}
 	if (solvedSquares === 0) {
-		console.log('NO MORE NULL VALUES: ');
+		console.log('NO MORE NULL VALUES: ');  // no empty squares left
 		buildPrinterString(fullArray);
 		return;
 	};
@@ -69,20 +64,6 @@ function insertSingletonValue(fullArray){
 	var possibleLengths = 0;
 	var row, col;
  
-	cycleCount = cycleCount +1;
-	
-	if (cycleCount === cycleCountLimit) {
-		cycleCount = 0;
-		console.log('calling findOptions from arrayDepot')
-
-		arrayDepotIndex = arrayDepotIndex + 1;
-		var arrayToPass = arrayDepotIndex - 1;
-		buildPrinterString(arrayDepot[arrayToPass]);
-		findOptions(arrayDepot[arrayToPass]);
-		return;	
-	};
- 
-	
 	for (row=0; row<9; row++) {
 		for (col=0; col<9; col++) {
 			if (fullArray[row][col].possibles.length === 1 && fullArray[row][col].value === null) {
@@ -102,14 +83,6 @@ function insertSingletonValue(fullArray){
 				console.log("Calling findOptions after one singleton possibles added.")
 				findOptions(fullArray);
 			}
-			else if (fullArray[row][col].possibles.length > 1 && fullArray[row][col].value === null) 
-			{
-				
-				//assign value and shorten array on left side
-				fullArray[row][col].value =  fullArray[row][col].possibles.shift() ;  
-				findOptions(fullArray);
-			}
-
 		}
 	}
 
