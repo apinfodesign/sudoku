@@ -5,35 +5,27 @@
 //"7      4 2 9 416      6   11   7  8 8 74132 9 9  8   56   2      413 8 2 8      6"
 //"2 97   3    954 7    3 1  8 5  4 7   2 5 8 1   4 6  2 4  8 5    3 412    8   71 3"
 //"   3  8 6    793  13 8      2 6  9  96     74  8  5 1      6 93  348    2 6  3   ";
-<<<<<<< HEAD
-//"45     3    8 1    9           5  9 2  7     8         1  4          7 2   6  8  "
-=======
-//"  76   32 1   38  6   4        9   3 8  5  2 5   6        1   7  98   6 87   64  ";
+ //"45     3    8 1    9           5  9 2  7     8         1  4          7 2   6  8  "
+ //"  76   32 1   38  6   4        9   3 8  5  2 5   6        1   7  98   6 87   64  ";
 //NOT SOLVED
->>>>>>> 577328941708aeabdd63e00db6c7ca907ca24c0a
-
+ 
 var databuilder = require('./arraybuilder.js')
 var printer = require('./boardprinter.js')
 var checkBlock = require('./checkBlock.js');
 var printer = require('./boardprinter.js');
-<<<<<<< HEAD
-=======
+ 
 var boardString = "  2  1  8 1  8  6 7  2  1  8  1  9   7  2  3   6  4  2  1  6  5 3  1  9 5  9  4  ";
 
-var boardArray = boardString.split('');
->>>>>>> 577328941708aeabdd63e00db6c7ca907ca24c0a
+//var boardString = "7      4 2 9 416      6   11   7  8 8 74132 9 9  8   56   2      413 8 2 8      6";
 
-var boardString = "45     3    8 1    9           5  9 2  7     8         1  4          7 2   6  8  ";
-//var boardString = "  76   32 1   38  6   4        9   3 8  5  2 5   6        1   7  98   6 87   64  ";
+
 var boardArray = boardString.split('');
 var masterCycleCount = 0;
 var masterCycleCountLimit = 5000;
-<<<<<<< HEAD
-=======
-
->>>>>>> 577328941708aeabdd63e00db6c7ca907ca24c0a
+ 
 var arrayDepot = [];
  
+//temp delete starting state
 console.log('BEFORE: ');
 printer(boardArray);
 
@@ -99,14 +91,8 @@ function insertSingletonValue(fullArray){
 			}
 		}
 	}
-<<<<<<< HEAD
-
- 
-	if (possibleLengths === 0) {
-=======
-	if (possibleLengths === 0) { 
->>>>>>> 577328941708aeabdd63e00db6c7ca907ca24c0a
-		console.log('NO NEW POSSIBLES ARRAYS WITH A LENGTH OF 1');
+ 	if (possibleLengths === 0) { 
+ 		console.log('NO NEW POSSIBLES ARRAYS WITH A LENGTH OF 1');
 		buildPrinterString(fullArray);
 		insertDupleValues(fullArray);
 	}
@@ -140,20 +126,60 @@ function insertDupleValues(fullArray){
 	}
 }
 
+// the NEW VERSION of buildPrinterString 
 
-function buildPrinterString(fullArray) {
+function buildPrinterString(fullArray){
 	var printableArray = [];
-		fullArray.forEach(function(record) {
-			for (var i = 0; i <= 8;i++) {
-				if (record[i]['value'] === null) {
-					printableArray.push(' ');
-				} else {
-					printableArray.push(record[i]['value']);
+	var set;
+	for (row=0; row<9; row++) {
+		for (col=0; col<9; col++) {		
+			if (fullArray[row][col].value === null){
+				//console.log("fullarray row col has null and length is " + fullArray[row][col].possibles.length)
+				var set = ' ';
+				//if null pass in negative number describing length of possibles array for diagnostics
+				switch( fullArray[row][col].possibles.length ){
+					case 1:	 set=-1; break;
+					case 2:	 set=-2; break;
+					case 3:  set=-3; break;
+					case 4:  set=-4; break;
+					case 5:  set=-5; break;
+					case 6:  set=-6; break;
+					case 7:  set=-7; break;
+					case 8:  set=-8; break;
+					case 9:  set=-9; break;
+					  
 				}
+				//console.log ("set becomes: " + set);
+			 	var space=set;	
+				printableArray.push(space);
 			}
-		});
+			else {
+			//console.log("fullarray row col .value has value" + fullArray[row][col].value)
+				squareValue = fullArray[row][col].value; 
+				printableArray.push( squareValue );
+			}
+		} //close for
+	} //close for
 	printer(printableArray);
-};
+};// close final
+
+
+// function buildPrinterString(fullArray) {
+// 	var printableArray = [];
+// 		fullArray.forEach(function(record) {
+// 			for (var i = 0; i <= 8;i++) {
+// 				if (record[i]['value'] === null) {
+					 
+// 					printableArray.push(' ');
+// 				} else 
+// 					{
+// 					printableArray.push(record[i]['value']);
+// 				}
+// 			}
+// 		});
+// 	console.log(printableArray + " is printableArray");
+// 	printer(printableArray);
+// };
 
 function checkRow (row,col, fullArray){
  	for (i = 0; i < 9; i++) {	// iterate across columns
@@ -185,9 +211,19 @@ function deletePossibles(toCheck, possiblesList){
 		for (var i = 0; i < possiblesList.length; i++) {
 			if (possiblesList[i] === toCheck) {
 				if (possiblesList.length < 2) {
- 					console.log('ERRROOORR CHECKER WORKED ___________________________ ON SQUARE ')
+ 					console.log('ERROR CHECKER WORKED ___________________________ ON SQUARE ')
 					console.log(arrayDepot[0][0]['possibles'])
-					findOptions(arrayDepot.shift());
+					
+					/// Temp comment out -  go to  first in
+					 //findOptions(arrayDepot.shift());
+	
+					/// Temp comment out -  go to  last in
+					 findOptions(arrayDepot.pop());
+
+					///begin with random arrayDepot instead of first or last in
+					 // randomArrayDepot = arrayDepot.splice(Math.floor(Math.random() * arrayDepot.length), 1)[0];
+					 // findOptions(randomArrayDepot);
+
 				} else {
 					possiblesList.splice(i, 1);
 				}

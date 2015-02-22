@@ -1,13 +1,23 @@
 function boardDivide() {
-  console.log('+----------+----------+----------+');
+  console.log('+-------------+-------------+-------------+');
 }
 var divider = '| ';
+var fullArrayLength = '*';
 
 function line(sliceStart, sliceEnd, boardArray) {
   var linePrint = '| ';
   var boxPrint = function(boxSliceStart, boxSliceEnd) {
       boardArray.slice(boxSliceStart,boxSliceEnd).forEach(function(number){
-      linePrint += (number + '  ')
+      
+      //fullArrayLength = fullArray[row][col].possibles.length;
+
+      //conditionally print number or other value if null
+      if (number > 0 ){  
+        linePrint += ('  ' + number + ' ')
+        }
+      else if (number<1){
+        linePrint += ('['+ number + ']')
+        }  
     }) 
       linePrint += divider;
   }
