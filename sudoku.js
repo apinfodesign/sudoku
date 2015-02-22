@@ -13,10 +13,13 @@ var databuilder = require('./arraybuilder.js')
 var printer = require('./boardprinter.js')
 var checkBlock = require('./checkBlock.js');
 var printer = require('./boardprinter.js');
- 
+
+//NOT YET SOLVED 
 var boardString = "  2  1  8 1  8  6 7  2  1  8  1  9   7  2  3   6  4  2  1  6  5 3  1  9 5  9  4  ";
 
+//SOLVABLE
 //var boardString = "7      4 2 9 416      6   11   7  8 8 74132 9 9  8   56   2      413 8 2 8      6";
+//var boardString = "   8 3 42  6  9  332   4 9  75 9  6 6  185  7 8  4 93  3 4   515  7  2  26 9 1   "
 
 
 var boardArray = boardString.split('');
@@ -44,8 +47,17 @@ function findOptions(fullArray){
 
 					return 	}
 	for (row=0; row<9; row++) {
-		for (col=0; col<9; col++) {					
+		for (col=0; col<9; col++) {	
+
+//diagnostic
+//console.log ("line 51 fullArray[row][col].value " + fullArray[row][col].value + " at row: " + row + " col: " + col );				
+			
 				if (fullArray[row][col].value === null) {
+
+//diagnostic 	
+//console.log ("line 55 fullArray[row][col].value " + fullArray[row][col].value + " at row: " + row + " col: " + col );				
+	
+
  						solvedSquares = 1;
 						checkRow(row,col,fullArray);    	//assemble and return possible values
 						checkCol(row,col,fullArray);			//assemble and return possible values
@@ -127,7 +139,6 @@ function insertDupleValues(fullArray){
 }
 
 // the NEW VERSION of buildPrinterString 
-
 function buildPrinterString(fullArray){
 	var printableArray = [];
 	var set;
@@ -136,7 +147,7 @@ function buildPrinterString(fullArray){
 			if (fullArray[row][col].value === null){
 				//console.log("fullarray row col has null and length is " + fullArray[row][col].possibles.length)
 				var set = ' ';
-				//if null pass in negative number describing length of possibles array for diagnostics
+				//if null pass in negative number describing length of possibles array for diagnostics - Number will be negative and in brackets in printout
 				switch( fullArray[row][col].possibles.length ){
 					case 1:	 set=-1; break;
 					case 2:	 set=-2; break;
@@ -163,7 +174,7 @@ function buildPrinterString(fullArray){
 	printer(printableArray);
 };// close final
 
-
+// PREVIOUS VERSION OF BUILD PRINTER STRING - DELETE
 // function buildPrinterString(fullArray) {
 // 	var printableArray = [];
 // 		fullArray.forEach(function(record) {
@@ -211,9 +222,13 @@ function deletePossibles(toCheck, possiblesList){
 		for (var i = 0; i < possiblesList.length; i++) {
 			if (possiblesList[i] === toCheck) {
 				if (possiblesList.length < 2) {
- 					console.log('ERROR CHECKER WORKED ___________________________ ON SQUARE ')
-					console.log(arrayDepot[0][0]['possibles'])
+ 					console.log('ERROR CHECKER WORKED ___________________ ON SQUARE ');
 					
+
+					//console.log(arrayDepot[0][0]['possibles']);
+					
+
+
 					/// Temp comment out -  go to  first in
 					 //findOptions(arrayDepot.shift());
 	
