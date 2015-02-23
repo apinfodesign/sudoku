@@ -17,10 +17,10 @@ var printer = require('./boardprinter.js');
 
 //NOT YET SOLVED 
 
-
+var boardString = "93      1 67    2 8     3   2  7    6   3 9      2 46 4  6      9  5   3     4   "
 
 //SOLVABLE
-var boardString = "               9  97 3      1  6 5    47 8  2     2  6 31  4      8  167 87      "
+//var boardString = "               9  97 3      1  6 5    47 8  2     2  6 31  4      8  167 87      "
 //var boardString = "  2  1  8 1  8  6 7  2  1  8  1  9   7  2  3   6  4  2  1  6  5 3  1  9 5  9  4  ";
 
 //var boardString = "7      4 2 9 416      6   11   7  8 8 74132 9 9  8   56   2      413 8 2 8      6";
