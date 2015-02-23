@@ -16,9 +16,13 @@ var printer = require('./boardprinter.js');
 
 
 //NOT YET SOLVED 
-var boardString = "  2  1  8 1  8  6 7  2  1  8  1  9   7  2  3   6  4  2  1  6  5 3  1  9 5  9  4  ";
+
+
 
 //SOLVABLE
+var boardString = "               9  97 3      1  6 5    47 8  2     2  6 31  4      8  167 87      "
+//var boardString = "  2  1  8 1  8  6 7  2  1  8  1  9   7  2  3   6  4  2  1  6  5 3  1  9 5  9  4  ";
+
 //var boardString = "7      4 2 9 416      6   11   7  8 8 74132 9 9  8   56   2      413 8 2 8      6";
 //var boardString = "   8 3 42  6  9  332   4 9  75 9  6 6  185  7 8  4 93  3 4   515  7  2  26 9 1   "
 
@@ -28,13 +32,18 @@ var masterCycleCount = 0;
 var masterCycleCountLimit = 5000;
  
 var arrayDepot = [];
- 
+var success=false;   //use to end program when board is filled 
+
 //temp delete starting state
 console.log('BEFORE: ');
 printer(boardArray);
 
+
+//Main program call
+while (!success){
 databuilder(boardArray, findOptions);
 //set iteration control
+}
 
 
 function findOptions(fullArray){
@@ -177,6 +186,15 @@ function buildPrinterString(fullArray){
 	} //close for
 	printer(printableArray);
 	console.log("Total length of all posssibles arrays is: " + (-1 * unsolvedArraySize));
+	
+	if ( unsolvedArraySize === 0 && masterCycleCount > 1){
+		console.log("Success! Solved after cycle count of " + masterCycleCount);
+		success = true;
+		console.log(success);
+		window.alert ("found it");  
+			// this does not work, but it stops execution as needed!
+		}
+
 
 };// close final
 
@@ -250,7 +268,7 @@ function deletePossibles(toCheck, possiblesList){
 	};
 };
 
-// // IN DEVELOPMENT - A FUNCTION TO PICK SMALLEST POSSIBLE ARRAY COUNT ARRAY?
+// // 
 // function selectBestFromArrayDepot(arrayDepot){
 // 	for (i=0; i<arrayDepot.length; i++)
 // 		for (row=0; row<9; row++) {
