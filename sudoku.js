@@ -14,6 +14,7 @@ var printer = require('./boardprinter.js')
 var checkBlock = require('./checkBlock.js');
 var printer = require('./boardprinter.js');
 
+
 //NOT YET SOLVED 
 var boardString = "  2  1  8 1  8  6 7  2  1  8  1  9   7  2  3   6  4  2  1  6  5 3  1  9 5  9  4  ";
 
@@ -21,7 +22,7 @@ var boardString = "  2  1  8 1  8  6 7  2  1  8  1  9   7  2  3   6  4  2  1  6 
 //var boardString = "7      4 2 9 416      6   11   7  8 8 74132 9 9  8   56   2      413 8 2 8      6";
 //var boardString = "   8 3 42  6  9  332   4 9  75 9  6 6  185  7 8  4 93  3 4   515  7  2  26 9 1   "
 
-
+var unsolvedArraySize;  // sums length of all possibles arrays
 var boardArray = boardString.split('');
 var masterCycleCount = 0;
 var masterCycleCountLimit = 5000;
@@ -36,12 +37,12 @@ databuilder(boardArray, findOptions);
 //set iteration control
 
 
-
-
 function findOptions(fullArray){
 	var row, col;
 	var solvedSquares = 0;
 	masterCycleCount = masterCycleCount + 1;
+
+
 	if (masterCycleCount >= masterCycleCountLimit){
 					console.log('Master Cycle Limit Exceeded');
 
@@ -92,7 +93,7 @@ function insertSingletonValue(fullArray){
 				fullArray[row][col].value = fullArray[row][col].possibles[0];  //assign the value!
 				
 
-				console.log('Singleton assigned at: ' + (col + 1) + ', ' + (9-row));
+				console.log('Singleton assigned at col: ' + (col + 1) + ', row:' + (9-row));
 				console.log('Block is: ' + fullArray[row][col].block);
 				buildPrinterString(fullArray);
  
@@ -142,6 +143,8 @@ function insertDupleValues(fullArray){
 function buildPrinterString(fullArray){
 	var printableArray = [];
 	var set;
+	var unsolvedArraySize = 0;  // reset sum of length of all possibles arrays
+
 	for (row=0; row<9; row++) {
 		for (col=0; col<9; col++) {		
 			if (fullArray[row][col].value === null){
@@ -161,6 +164,7 @@ function buildPrinterString(fullArray){
 					  
 				}
 				//console.log ("set becomes: " + set);
+				unsolvedArraySize = unsolvedArraySize + set;
 			 	var space=set;	
 				printableArray.push(space);
 			}
@@ -172,6 +176,8 @@ function buildPrinterString(fullArray){
 		} //close for
 	} //close for
 	printer(printableArray);
+	console.log("Total length of all posssibles arrays is: " + (-1 * unsolvedArraySize));
+
 };// close final
 
 // PREVIOUS VERSION OF BUILD PRINTER STRING - DELETE
@@ -217,18 +223,14 @@ function checkCol (row,col, fullArray){
 //iterate through possibles array and delete the toCheck element from possibles array
 function deletePossibles(toCheck, possiblesList){
 
-
 	if (possiblesList.indexOf(toCheck) > -1) {
 		for (var i = 0; i < possiblesList.length; i++) {
 			if (possiblesList[i] === toCheck) {
 				if (possiblesList.length < 2) {
  					console.log('ERROR CHECKER WORKED ___________________ ON SQUARE ');
 					
-
 					//console.log(arrayDepot[0][0]['possibles']);
 					
-
-
 					/// Temp comment out -  go to  first in
 					 //findOptions(arrayDepot.shift());
 	
@@ -247,6 +249,16 @@ function deletePossibles(toCheck, possiblesList){
 		};
 	};
 };
+
+// // IN DEVELOPMENT - A FUNCTION TO PICK SMALLEST POSSIBLE ARRAY COUNT ARRAY?
+// function selectBestFromArrayDepot(arrayDepot){
+// 	for (i=0; i<arrayDepot.length; i++)
+// 		for (row=0; row<9; row++) {
+// 			for (col=0; col<9; col++) {		
+// 				if (fullArray[row][col].value <0 {
+// 					sumPossibles=sumPossibles + (fullArray[row][col].possibles;
+
+// };
 
 
 function boxDeletePossibles(possiblesList, callback){
